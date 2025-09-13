@@ -1,0 +1,65 @@
+0 LOG:  [Alarm Module]can not read GAUSS_WARNING_TYPE env.
+	
+0 LOG:  [Alarm Module]Host Name: MSI4090 
+	
+0 LOG:  [Alarm Module]Host IP: MSI4090. Copy hostname directly in case of taking 10s to use 'gethostbyname' when /etc/hosts does not contain <HOST IP>
+	
+0 LOG:  [Alarm Module]Get ENV GS_CLUSTER_NAME failed!
+	
+0 LOG:  [Alarm Module]Invalid data in AlarmItem file! Read alarm English name failed! line: 61
+	
+0 WARNING:  failed to open feature control file, please check whether it exists: FileName=gaussdb.version, Errno=2, Errmessage=No such file or directory.
+0 WARNING:  failed to parse feature control file: gaussdb.version.
+0 WARNING:  Failed to load the product control file, so gaussdb cannot distinguish product version.
+2025-09-12 01:31:59.607 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  when starting as multi_standby mode, we couldn't support data replicaton.
+2025-09-12 01:31:59.607 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  base_page_saved_interval is 400, ori is 400.
+2025-09-12 01:31:59.614 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  [Alarm Module]can not read GAUSS_WARNING_TYPE env.
+	
+2025-09-12 01:31:59.614 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  [Alarm Module]Host Name: MSI4090 
+	
+2025-09-12 01:31:59.614 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  [Alarm Module]Host IP: MSI4090. Copy hostname directly in case of taking 10s to use 'gethostbyname' when /etc/hosts does not contain <HOST IP>
+	
+2025-09-12 01:31:59.614 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  [Alarm Module]Get ENV GS_CLUSTER_NAME failed!
+	
+2025-09-12 01:31:59.614 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  [Alarm Module]Invalid data in AlarmItem file! Read alarm English name failed! line: 61
+	
+2025-09-12 01:31:59.614 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  [Alarm Module]opendir /home/shuaikangzhou/proj/data/gs_log failed! 
+	
+2025-09-12 01:31:59.618 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  loaded library "security_plugin"
+2025-09-12 01:31:59.631 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] WARNING:  could not create any HA TCP/IP sockets
+2025-09-12 01:31:59.631 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] WARNING:  could not create any HA TCP/IP sockets
+2025-09-12 01:31:59.652 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  InitNuma numaNodeNum: 1 numa_distribute_mode: none inheritThreadPool: 0.
+2025-09-12 01:31:59.652 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  reserved memory for backend threads is: 220 MB
+2025-09-12 01:31:59.652 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  reserved memory for WAL buffers is: 128 MB
+2025-09-12 01:31:59.652 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  Set max backend reserve memory is: 348 MB, max dynamic memory is: 4676 MB
+2025-09-12 01:31:59.652 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  shared memory 6751 Mbytes, memory context 5024 Mbytes, max process memory 12288 Mbytes
+2025-09-12 01:31:59.652 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] WARNING:  max_imcs_cache * htap_borrow_mem_percent is larger than max_borrow_memory
+2025-09-12 01:31:59.783 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [CACHE] LOG:  set data cache  size(402653184)
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 0 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 1 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 2 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 3 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 4 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 5 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 6 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 7 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 8 CBM Reader worker reset status success.
+2025-09-12 01:31:59.838 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  The 9 CBM Reader worker reset status success.
+2025-09-12 01:31:59.841 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [SEGMENT_PAGE] LOG:  Segment-page constants: DF_MAP_SIZE: 8156, DF_MAP_BIT_CNT: 65248, DF_MAP_GROUP_EXTENTS: 4175872, IPBLOCK_SIZE: 8168, EXTENTS_PER_IPBLOCK: 1021, IPBLOCK_GROUP_SIZE: 4090, BMT_HEADER_LEVEL0_TOTAL_PAGES: 8323072, BktMapEntryNumberPerBlock: 2038, BktMapBlockNumber: 25, BktBitMaxMapCnt: 512
+2025-09-12 01:31:59.867 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  gaussdb: fsync file "/home/shuaikangzhou/proj/data/gaussdb.state.temp" success
+2025-09-12 01:31:59.867 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  create gaussdb state file success: db state(STARTING_STATE), server mode(Normal), connection index(1)
+2025-09-12 01:32:00.075 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  max_safe_fds = 981, usable_fds = 1000, already_open = 9
+2025-09-12 01:32:00.083 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  the configure file /home/shuaikangzhou/proj/openGauss-server/mppdb_temp_install/etc/gscgroup_shuaikangzhou.cfg doesn't exist or the size of configure file has changed. Please create it by root user!
+2025-09-12 01:32:00.083 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [BACKEND] LOG:  Failed to parse cgroup config file.
+2025-09-12 01:32:00.117 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] WARNING:  Failed to obtain environment value $GAUSSLOG!
+2025-09-12 01:32:00.117 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] DETAIL:  N/A
+2025-09-12 01:32:00.117 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] CAUSE:  Incorrect environment value.
+2025-09-12 01:32:00.117 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] ACTION:  Please refer to backend log for more details.
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] WARNING:  Failed to obtain environment value $GAUSSLOG!
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] DETAIL:  N/A
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] CAUSE:  Incorrect environment value.
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] ACTION:  Please refer to backend log for more details.
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] WARNING:  Failed to obtain environment value $GAUSSLOG!
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] DETAIL:  N/A
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] CAUSE:  Incorrect environment value.
+2025-09-12 01:32:00.118 [unknown] [unknown] localhost 139807531540288 0[0:0#0]  0 [EXECUTOR] ACTION:  Please refer to backend log for more details.
