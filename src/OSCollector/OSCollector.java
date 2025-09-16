@@ -17,6 +17,7 @@ public class OSCollector
     private String		script;
     private int			interval;
     private String		sshAddress;
+	private String		sshPort;
     private String		devices;
     private File		outputDir;
     private Logger		log;
@@ -29,7 +30,7 @@ public class OSCollector
     private BufferedWriter	resultCSVs[];
 
     public OSCollector(String script, int runID, int interval,
-    		       String sshAddress, String devices, File outputDir,
+    		       String sshAddress,String sshPort, String devices, File outputDir,
 		       Logger log)
     {
     	List<String>	cmdLine = new ArrayList<String>();
@@ -38,6 +39,7 @@ public class OSCollector
     	this.script	= script;
 	this.interval	= interval;
 	this.sshAddress	= sshAddress;
+	this.sshPort = sshPort;
 	this.devices	= devices;
 	this.outputDir	= outputDir;
 	this.log	= log;
@@ -47,7 +49,10 @@ public class OSCollector
 	    cmdLine.add("ssh");
 	    // cmdLine.add("-t");
 	    cmdLine.add(sshAddress);
-		cmdLine.add("-p 2222");
+		if(sshPort != null){
+			cmdLine.add("-p " + sshPort);
+		}
+		
 	}
 	cmdLine.add("python");
 	cmdLine.add("-");

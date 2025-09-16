@@ -253,6 +253,7 @@ public class jTPCC implements jTPCCConfig
 				runID,
 				Integer.parseInt(getProp(ini, "osCollectorInterval")),
 				getProp(ini, "osCollectorSSHAddr"),
+				getProp(ini, "osCollectorSSHPort"),
 				getProp(ini, "osCollectorDevices"),
 				resultDataDir, log);
 	    }

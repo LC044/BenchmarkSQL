@@ -1,7 +1,6 @@
 db=postgres
 driver=org.postgresql.Driver
-//conn=jdbc:postgresql://127.0.0.1:33000/tpccdb
-conn=jdbc:postgresql://172.19.0.209:33000/tpccdb
+conn=jdbc:postgresql://127.0.0.1:33000/tpccdb?enableATF=true
 user=tpcc
 password=Tpcc@123
 
@@ -36,4 +35,3 @@ osCollectorInterval=1
 osCollectorSSHAddr=shuaikangzhou@127.0.0.1
 osCollectorSSHPort=2222
 osCollectorDevices=net_eth4 blk_sdc
-

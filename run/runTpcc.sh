@@ -2,7 +2,39 @@
 
 # 运行基准测试
 echo "开始运行基准测试..."
-./runBenchmark.sh ./props.opengauss.1000w
+
+
+# 默认配置
+props_file="./props.opengauss.1000w"
+
+# 解析命令行参数
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        # 短参数带值：-c 或 --config 后面跟配置文件路径
+        -a)
+            props_file="./props.opengauss.atf"
+            shift
+            ;;
+        # 帮助信息
+        -h|--help)
+            echo "使用方法: $0 [选项]"
+            echo "  -a, --atf    指定配置文件路径（默认: ./props.opengauss.atf）"
+            exit 0
+            ;;
+            
+        # 未知参数
+        *)
+            echo "错误：未知参数 $1" >&2
+            echo "使用 -h 或 --help 查看帮助" >&2
+            exit 1
+            ;;
+    esac
+done
+
+# 运行基准测试
+echo "开始运行基准测试..."
+echo "配置文件: $props_file"
+./runBenchmark.sh $props_file
 
 # 从当前文件夹中查找最新的my_result_*文件夹
 echo "查找最新的结果文件夹..."
@@ -33,7 +65,7 @@ fi
 # 运行内存分析脚本
 echo "运行内存分析..."
 if [ -f "$result_dir/benchmarksql-debug.log" ]; then
-    python ./misc/memory.py "$result_dir/benchmarksql-debug.log"
+    python3 ./misc/memory.py "$result_dir/benchmarksql-debug.log"
 else
     echo "错误：在结果文件夹中未找到benchmarksql-debug.log"
     exit 1
