@@ -18,4 +18,4 @@ setCP || exit 1
 
 myOPTS="-Dprop=$1 -DrunID=${SEQ}"
 
-java -cp "$myCP" $myOPTS jTPCC
+java -Xms200m -Xmx400m -cp "$myCP" $myOPTS jTPCC
