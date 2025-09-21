@@ -19,6 +19,8 @@ from misc import (
     tpm_nopm,
     blk_device_iops,
     blk_device_kbps,
+    net_device_iops,
+    net_device_kbps,
     dirty_buffers,
     cpu_utilization,
 )
@@ -47,7 +49,7 @@ def main(result_dirs):
             except Exception as e:
                 print("ERROR")
                 print(e, file=sys.stderr)
-                sys.exit(3)
+                # sys.exit(3)
 
         # blk 设备图
         for fname in glob.glob("data/blk_*.csv"):
@@ -59,7 +61,7 @@ def main(result_dirs):
             except Exception as e:
                 print("ERROR")
                 print(e, file=sys.stderr)
-                sys.exit(3)
+                # sys.exit(3)
 
             print(f"Generating {resdir}/{devname}_kbps.png ... ", end="")
             try:
@@ -68,28 +70,28 @@ def main(result_dirs):
             except Exception as e:
                 print("ERROR")
                 print(e, file=sys.stderr)
-                sys.exit(3)
+                # sys.exit(3)
 
-        # # net 设备图
-        # for fname in glob.glob("data/net_*.csv"):
-        #     devname = os.path.basename(fname).replace(".csv", "")
-        #     print(f"Generating {resdir}/{devname}_iops.png ... ", end="")
-        #     try:
-        #         generate_net_device_iops(resdir, devname, WIDTH, HEIGHT)
-        #         print("OK")
-        #     except Exception as e:
-        #         print("ERROR")
-        #         print(e, file=sys.stderr)
-        #         sys.exit(3)
+        # net 设备图
+        for fname in glob.glob("data/net_*.csv"):
+            devname = os.path.basename(fname).replace(".csv", "")
+            print(f"Generating {resdir}/{devname}_iops.png ... ", end="")
+            try:
+                net_device_iops.plot(devname, WIDTH, HEIGHT)
+                print("OK")
+            except Exception as e:
+                print("ERROR")
+                print(e, file=sys.stderr)
+                # sys.exit(3)
 
-        #     print(f"Generating {resdir}/{devname}_kbps.png ... ", end="")
-        #     try:
-        #         generate_net_device_kbps(resdir, devname, WIDTH, HEIGHT)
-        #         print("OK")
-        #     except Exception as e:
-        #         print("ERROR")
-        #         print(e, file=sys.stderr)
-        #         sys.exit(3)
+            print(f"Generating {resdir}/{devname}_kbps.png ... ", end="")
+            try:
+                net_device_kbps.plot(devname, WIDTH, HEIGHT)
+                print("OK")
+            except Exception as e:
+                print("ERROR")
+                print(e, file=sys.stderr)
+                # sys.exit(3)
 
         os.chdir("..")
 

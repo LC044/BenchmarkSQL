@@ -44,7 +44,30 @@ def main():
         "used_mb": used_mem,
         "total_mb": total_mem
     })
-    
+    if len(used_mem) > 0:
+        used_mem_mean = df["used_mb"].sum() / len(used_mem)
+        used_mem_max = df["used_mb"].max()
+        used_mem_min = df["used_mb"].min()
+    else:
+        used_mem_mean = 0
+        used_mem_max = 0
+        used_mem_min = 0
+    if len(total_mem) > 0:
+        total_mem_mean = df["total_mb"].sum() / len(total_mem)
+        total_mem_max = df["total_mb"].max()
+        total_mem_min = df["total_mb"].min()
+    else:
+        total_mem_mean = 0
+        total_mem_max = 0
+        total_mem_min = 0
+
+    with open(log_file, "a") as f:
+        f.write(f"Max memory usage: {used_mem_max:.0f}MB / {total_mem_max:.0f}MB\n")
+        f.write(f"Min memory usage: {used_mem_min:.0f}MB / {total_mem_min:.0f}MB\n")
+        f.write(f"Max-min memory usage: {used_mem_max-used_mem_min:.0f}MB / {total_mem_max-total_mem_min:.0f}MB\n")
+        f.write(f"Average memory usage: {used_mem_mean:.0f}MB / {total_mem_mean:.0f}MB\n")
+
+
     # 计算相对时间（分钟），从0开始
     start_time = df["timestamp"].iloc[0]
     df["minutes_since_start"] = (df["timestamp"] - start_time).dt.total_seconds() / 60

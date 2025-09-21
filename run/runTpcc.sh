@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 # 运行基准测试
@@ -9,7 +10,7 @@ props_file="./props.opengauss.1000w"
 run_count=1  # 默认运行1次
 destroy_db=0
 # 远程服务器信息 - 请根据实际情况修改以下信息
-remote_server="shuaikangzhou@127.0.0.1 -p 2222"  
+remote_server="zhousk@172.19.0.209"  
 # 远程服务器用户名和主机地址，例如：root@192.168.1.100，需要与本机设置互信
 
 
@@ -64,15 +65,15 @@ for ((i=1; i<=run_count; i++)); do
     echo "===== 开始第 $i 次基准测试 ====="
     echo "配置文件: $props_file"
 
+
     # 登录远程服务器启动数据库
     echo "登录远程服务器 $remote_server 启动数据库..."
-    ssh $remote_server "openGauss start"
+    ssh $remote_server "gs_ctl start -D /mnt/nvme2n1/zhousk/data/data_n1 -Z single_node -l logfil"
     
     # 等待10秒让数据库完全启动
     echo "等待10秒让数据库启动完成..."
     sleep 10
 
-    # 重建数据仓
     if [ "$destroy_db" -eq 1 ]; then
         ./runDatabaseDestroy.sh "$props_file"
         ./runDatabaseBuild.sh "$props_file"
@@ -82,11 +83,11 @@ for ((i=1; i<=run_count; i++)); do
 
      # 登录远程服务器关闭数据库
     echo "登录远程服务器 $remote_server 关闭数据库..."
-    ssh $remote_server "openGauss stop"
+    ssh $remote_server "gs_ctl stop -D /mnt/nvme2n1/zhousk/data/data_n1"
     
     # 等待10秒让数据库完全关闭
     echo "等待10秒让数据库关闭完成..."
-    # sleep 10
+    sleep 10
 
     # 从当前文件夹中查找最新的my_result_*文件夹
     echo "查找最新的结果文件夹..."
@@ -104,7 +105,7 @@ for ((i=1; i<=run_count; i++)); do
 
     # 生成图表
     echo "生成测试图表..."
-    ./generateGraphs.sh "$result_dir/"
+    python ./generateGraphs.py "$result_dir/"
 
     # 移动日志文件到结果文件夹
     echo "移动日志文件..."

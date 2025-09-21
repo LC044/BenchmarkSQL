@@ -12,7 +12,7 @@ terminals=100
 //To run specified transactions per terminal- runMins must equal zero
 runTxnsPerTerminal=0
 //To run for specified minutes- runTxnsPerTerminal must equal zero
-runMins=120
+runMins=10
 //Number of total transactions per minute
 limitTxnsPerMin=0
 
@@ -33,7 +33,7 @@ stockLevelWeight=4
 resultDirectory=my_result_%tY-%tm-%td_%tH%tM%tS
 osCollectorScript=./misc/os_collector_linux.py
 osCollectorInterval=1
-osCollectorSSHAddr=shuaikangzhou@127.0.0.1
-osCollectorSSHPort=2222
-osCollectorDevices=net_eth4 blk_sdc
+osCollectorSSHAddr=zhousk@172.19.0.209
+//osCollectorSSHPort=2222
+osCollectorDevices=net_ens17f0 blk_nvme2n1
 
