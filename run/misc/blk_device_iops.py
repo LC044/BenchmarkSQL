@@ -47,8 +47,8 @@ def plot(device,width,height):
     # Plot
     # ----
     plt.figure(figsize=(width/100, height/100))
-    plt.plot(agg_reads["group"] / 60000.0, agg_reads["rdiops"], label=f"Read Operations on {device}", color="blue")
-    plt.plot(agg_writes["group"] / 60000.0, agg_writes["wriops"], label=f"Write Operations on {device}", color="red")
+    plt.plot(agg_reads["group"] / 60000.0, agg_reads["rdiops"], linewidth=2, label=f"Read Operations on {device}", color="blue")
+    plt.plot(agg_writes["group"] / 60000.0, agg_writes["wriops"], linewidth=2, label=f"Write Operations on {device}", color="red")
 
     plt.xlabel("Elapsed Minutes")
     plt.ylabel("IO Operations per Second")

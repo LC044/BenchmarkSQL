@@ -55,12 +55,14 @@ def plot(height,width):
     plt.plot(
         count_total['group'] / 60000.0,  # convert ms to minutes
         count_total['count'] * 60.0 / interval,
+        linewidth=2,
         label='tpmTOTAL',
         color='blue'
     )
     plt.plot(
         count_new_order['group'] / 60000.0,
         count_new_order['count'] * 60.0 / interval,
+        linewidth=2,
         label='tpmC (NewOrder only)',
         color='red'
     )

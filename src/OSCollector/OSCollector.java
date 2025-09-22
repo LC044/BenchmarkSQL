@@ -54,7 +54,7 @@ public class OSCollector
 		}
 		
 	}
-	cmdLine.add("python");
+	cmdLine.add("python3");
 	cmdLine.add("-");
 	cmdLine.add(Integer.toString(runID));
 	cmdLine.add(Integer.toString(interval));
