@@ -5,10 +5,10 @@ conn=jdbc:postgresql://172.19.0.209:33000/tpccdb
 user=tpcc
 password=Tpcc@123
 
-warehouses=1000
+warehouses=400
 loadWorkers=25
 
-terminals=200
+terminals=64
 //To run specified transactions per terminal- runMins must equal zero
 runTxnsPerTerminal=0
 //To run for specified minutes- runTxnsPerTerminal must equal zero

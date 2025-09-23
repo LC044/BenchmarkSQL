@@ -9,7 +9,7 @@ HEIGHT = 600
 # 简单图表列表
 SIMPLE_GRAPHS = [
     "tpm_nopm",
-    # "latency",
+    "latency",
     "cpu_utilization",
     "dirty_buffers"
 ]
@@ -23,11 +23,12 @@ from misc import (
     net_device_kbps,
     dirty_buffers,
     cpu_utilization,
+    latency,
 )
 
 graph_func_map = {
     "tpm_nopm": tpm_nopm.plot,
-    # "latency": generate_latency,
+    "latency": latency.plot,
     "cpu_utilization": cpu_utilization.plot,
     "dirty_buffers": dirty_buffers.plot,
 }

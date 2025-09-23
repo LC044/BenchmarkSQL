@@ -6,20 +6,17 @@ echo "开始运行基准测试..."
 
 
 # 默认配置
-props_file="./props.opengauss.1000w"
+props_file="./props.opengauss"
+warehouses=200
+enable_atf=0
 run_count=1  # 默认运行1次
 destroy_db=0
-# 远程服务器信息 - 请根据实际情况修改以下信息
-remote_server="zhousk@172.19.0.209"  
-# 远程服务器用户名和主机地址，例如：root@192.168.1.100，需要与本机设置互信
-
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        # 短参数带值：-c 或 --config 后面跟配置文件路径
         -a)
-            props_file="./props.opengauss.atf"
+            enable_atf=1
             shift
             ;;
         # 运行次数参数
@@ -36,15 +33,27 @@ while [[ $# -gt 0 ]]; do
             destroy_db=1
             shift
             ;;
+        -w)
+            # 判断参数是否是200、400、1000中的任意一个
+            if [ "$2" -eq 200 ] || [ "$2" -eq 400 ] || [ "$2" -eq 1000 ]; then
+                warehouses=$2
+                shift 2
+            else
+                echo "参数 -w 必须是200、400、1000中的任何一个"
+                exit 1
+            fi
+            ;;
         # 帮助信息
         -h|--help)
             echo "使用方法: $0 [选项]"
-            echo "  -a, --atf    指定配置文件路径（默认: ./props.opengauss.atf）"
-            echo "  -n           指定运行次数（默认: 1，需要跟一个正整数）"
+            echo "  -a    启用ATF功能"
+            echo "  -n    指定运行次数（默认: 1，需要跟一个正整数）"
+            echo "  -c    每次运行前销毁并重建数据库"
+            echo "  -w    指定仓库数量（200、400、1000）"
             echo "  -h, --help   显示帮助信息"
             exit 0
             ;;
-            
+
         # 未知参数
         *)
             echo "错误：未知参数 $1" >&2
@@ -60,35 +69,15 @@ if [[ $run_count -lt 1 ]]; then
     exit 1
 fi
 
-# 循环运行基准测试
-for ((i=1; i<=run_count; i++)); do
-    echo "===== 开始第 $i 次基准测试 ====="
-    echo "配置文件: $props_file"
+props_file="./props.opengauss.${warehouses}w"
+if [ "$enable_atf" -eq 1 ]; then
+    props_file="${props_file}.atf"
+fi
 
+source ./server.sh "$warehouses"
 
-    # 登录远程服务器启动数据库
-    echo "登录远程服务器 $remote_server 启动数据库..."
-    ssh $remote_server "gs_ctl start -D /mnt/nvme2n1/zhousk/data/data_n1 -Z single_node -l logfil"
-    
-    # 等待10秒让数据库完全启动
-    echo "等待10秒让数据库启动完成..."
-    sleep 10
-
-    if [ "$destroy_db" -eq 1 ]; then
-        ./runDatabaseDestroy.sh "$props_file"
-        ./runDatabaseBuild.sh "$props_file"
-    fi
-
-    ./runBenchmark.sh "$props_file"
-
-     # 登录远程服务器关闭数据库
-    echo "登录远程服务器 $remote_server 关闭数据库..."
-    ssh $remote_server "gs_ctl stop -D /mnt/nvme2n1/zhousk/data/data_n1"
-    
-    # 等待10秒让数据库完全关闭
-    echo "等待10秒让数据库关闭完成..."
-    sleep 10
-
+function generateGraphs() {
+    echo "生成图表..."
     # 从当前文件夹中查找最新的my_result_*文件夹
     echo "查找最新的结果文件夹..."
     result_dir=$(find . -maxdepth 1 -type d -name "my_result_*" -printf "%T+ %p\n" | sort -r | head -n 1 | cut -d' ' -f2-)
@@ -123,7 +112,21 @@ for ((i=1; i<=run_count; i++)); do
         echo "错误：在结果文件夹中未找到benchmarksql-debug.log"
         exit 1
     fi
+}
 
+# 循环运行基准测试
+for ((i=1; i<=run_count; i++)); do
+    echo "===== 开始第 $i 次基准测试 ====="
+    echo "配置文件: $props_file"
+    # 如果启用了销毁数据库选项，则重建数据库
+    if [ "$destroy_db" -eq 1 ]; then
+        rebuild_database # 重建数据库
+    fi
+
+    start_database # 启动数据库
+    ./runBenchmark.sh "$props_file" 
+    stop_database # 关闭数据库
+    generateGraphs # 生成图表
     echo "===== 第 $i 次基准测试完成 ====="
     echo
 done
