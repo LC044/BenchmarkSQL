@@ -1,18 +1,18 @@
 db=postgres
 driver=org.postgresql.Driver
 //conn=jdbc:postgresql://127.0.0.1:33000/tpccdb
-conn=jdbc:postgresql://172.19.0.209:33000/tpccdb?enableATF=true
+conn=jdbc:postgresql://192.168.200.209:33000/tpccdb?enableATF=true
 user=tpcc
 password=Tpcc@123
 
 warehouses=1000
-loadWorkers=25
+loadWorkers=72
 
 terminals=200
 //To run specified transactions per terminal- runMins must equal zero
 runTxnsPerTerminal=0
 //To run for specified minutes- runTxnsPerTerminal must equal zero
-runMins=30
+runMins=15
 //Number of total transactions per minute
 limitTxnsPerMin=0
 
@@ -33,7 +33,7 @@ stockLevelWeight=4
 resultDirectory=my_result_%tY-%tm-%td_%tH%tM%tS
 osCollectorScript=./misc/os_collector_linux.py
 osCollectorInterval=1
-osCollectorSSHAddr=zhousk@172.19.0.209
+osCollectorSSHAddr=zhousk@192.168.200.209
 //osCollectorSSHPort=2222
 osCollectorDevices=net_ens17f0 blk_nvme2n1 blk_nvme3n1 blk_nvme4n1
 

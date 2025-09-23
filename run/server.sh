@@ -5,7 +5,7 @@ warehouses=$1
 
 # 远程服务器信息 - 请根据实际情况修改以下信息
 
-remote_server="zhousk@172.19.0.209"
+remote_server="zhousk@192.168.200.209"
 
 db_dir="/mnt/nvme2n1/zhousk/data/data_n1"
 TABSPACE2_DIR="/mnt/nvme3n1/zhousk/data/data_n1"
