@@ -7,6 +7,8 @@ warehouses=$1
 
 remote_server="zhousk@172.19.0.209"
 
+# 远程服务器用户名和主机地址，例如：root@192.168.1.100，需要与本机设置互信
+
 db_dir="/mnt/nvme2n1/zhousk/data/data_n1"
 TABSPACE2_DIR="/mnt/nvme3n1/zhousk/data/data_n1"
 TABSPACE3_DIR="/mnt/nvme4n1/zhousk/data/data_n1"
@@ -20,8 +22,6 @@ backup_dir="/mnt/nvme4n1/zhousk/backup/${warehouses}w"
 # cd $DATA_DIR/pg_location/ 
 # ln -svf $TABSPACE2_DIR/tablespace2 ./
 
-
-# 远程服务器用户名和主机地址，例如：root@192.168.1.100，需要与本机设置互信
 
 function rebuild_database() {
     echo "销毁并重建数据库..."

@@ -33,7 +33,10 @@ function getProp()
     grep "^${1}=" run.properties | sed -e "s/^${1}=//"
 }
 
-./generateGraphs.sh "${1}"
+#./generateGraphs.sh "${1}"
+
+python3 ./generateGraphs.py "$result_dir/"
+
 cd "${1}"
 echo -n "Generating ${1}/report.html ... "
 
@@ -85,7 +88,10 @@ samp		{ font-family: Courier,Fixed;
 big		{ font-weight: 900;
 		  font-size: 120%;
 		}
-
+img {
+  width: 1200px;
+  height: 400px;
+}
   </style>
 </head>
 <body bgcolor="#ffffff">
@@ -236,6 +242,15 @@ cat >>report.html <<_EOF_
   <h2>
     System Resource Usage
   </h2>
+  <h3>
+    Memory Usage of the Benchmark Client
+  </h3>
+  <p>
+    The memory usage of the Benchmark Client as measured by the logger.
+
+    <br/>
+    <img src="memory_usage_curve.png"/>
+  </p>
   <h3>
     CPU Utilization
   </h3>
