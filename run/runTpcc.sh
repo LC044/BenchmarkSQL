@@ -94,7 +94,7 @@ function generateGraphs() {
 
     # 生成图表
     echo "生成测试图表..."
-    python ./generateGraphs.py "$result_dir/"
+    python3 ./generateGraphs.py "$result_dir/"
 
     # 移动日志文件到结果文件夹
     echo "移动日志文件..."
