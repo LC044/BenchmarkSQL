@@ -73,7 +73,7 @@ def main():
     df["minutes_since_start"] = (df["timestamp"] - start_time).dt.total_seconds() / 60
     
     # 绘制曲线
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(18, 6))
     plt.plot(df["minutes_since_start"], df["used_mb"], label="Used Memory (MB)", color="blue")
     plt.plot(df["minutes_since_start"], df["total_mb"], label="Total Memory (MB)", color="orange", linestyle="--")
     plt.xlabel("Minutes Since Start")

@@ -35,7 +35,7 @@ function getProp()
 
 #./generateGraphs.sh "${1}"
 
-python3 ./generateGraphs.py "$result_dir/"
+python3 ./generateGraphs.py "${1}"
 
 cd "${1}"
 echo -n "Generating ${1}/report.html ... "
