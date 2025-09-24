@@ -35,5 +35,5 @@ osCollectorScript=./misc/os_collector_linux.py
 osCollectorInterval=1
 osCollectorSSHAddr=zhousk@192.168.200.209
 //osCollectorSSHPort=2222
-osCollectorDevices=net_ens17f0 blk_nvme2n1 blk_nvme3n1 blk_nvme4n1
+osCollectorDevices=net_ib0 blk_nvme2n1 blk_nvme3n1 blk_nvme4n1
 
