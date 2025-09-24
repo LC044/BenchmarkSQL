@@ -93,9 +93,9 @@ function generateGraphs() {
     echo "使用最新的结果文件夹：$result_dir"
 
     # 生成图表
-    echo "生成测试图表..."
-    python3 ./generateGraphs.py "$result_dir/"
-
+    echo "生成测试报告..."
+    # python3 ./generateGraphs.py "$result_dir/"
+    ./generateReport.sh "$result_dir/"
     # 移动日志文件到结果文件夹
     echo "移动日志文件..."
     if [ -f "./benchmarksql-debug.log" ]; then
