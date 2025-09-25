@@ -11,7 +11,7 @@ warehouses=200
 enable_atf=0
 run_count=1  # 默认运行1次
 destroy_db=0
-jvm_max_mem=-1  # 默认最大内存4000MB
+jvm_max_mem=0  # 默认不限制内存
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
