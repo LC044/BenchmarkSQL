@@ -60,7 +60,8 @@ def main():
         total_mem_mean = 0
         total_mem_max = 0
         total_mem_min = 0
-
+    ymax = total_mem_max * 1.2
+    xmax = len(total_mem)
     with open(log_file, "a") as f:
         f.write(f"Max memory usage: {used_mem_max:.0f}MB / {total_mem_max:.0f}MB\n")
         f.write(f"Min memory usage: {used_mem_min:.0f}MB / {total_mem_min:.0f}MB\n")
@@ -79,8 +80,10 @@ def main():
     plt.xlabel("Minutes Since Start")
     plt.ylabel("Memory (MB)")
     plt.title("BenchmarkSQL Memory Usage Over Time")
-    plt.legend()
+    plt.legend(loc='upper left')
     plt.grid(True)
+    # plt.xlim(0, xmax)
+    plt.ylim(0, ymax)
     plt.tight_layout()
     
     # 获取日志文件所在目录

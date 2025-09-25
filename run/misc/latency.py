@@ -54,7 +54,7 @@ def plot(width, height):
         ymax *= 1.2
     
     # 设置绘图风格和大小
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(width/100, height/100))
     plt.subplots_adjust()
     
     # 定义颜色映射
