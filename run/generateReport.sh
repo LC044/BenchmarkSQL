@@ -235,6 +235,49 @@ cat >>report.html <<_EOF_
   </p>
 _EOF_
 
+# ------------- 新增：提取 benchmark-debug.log 中的内存数据 -------------
+# 定义日志路径（假设日志在结果目录 ${1} 下，若路径不同需调整）
+DEBUG_LOG="benchmarksql-debug.log"
+
+# 初始化内存变量（若日志不存在，默认显示 "N/A"）
+MEM_MAX_USED="N/A"
+MEM_MAX_TOTAL="N/A"
+MEM_MIN_USED="N/A"
+MEM_MIN_TOTAL="N/A"
+MEM_MAXMIN_USED="N/A"
+MEM_MAXMIN_TOTAL="N/A"
+MEM_AVG_USED="N/A"
+MEM_AVG_TOTAL="N/A"
+JVM_MAX_MEM="N/A"
+
+# 检查日志文件是否存在，存在则提取数据
+if [ -f "${DEBUG_LOG}" ]; then
+    # 提取最大内存：Max memory usage: 1862MB / 2041MB → 取第4列（已用）、第6列（总）
+    MEM_MAX_USED=$(grep "Max memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $4}' | sed 's/MB$//')
+    MEM_MAX_TOTAL=$(grep "Max memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $6}' | sed 's/MB$//')
+    
+    # 提取最小内存：Min memory usage: 45MB / 1963MB → 取第4列（已用）、第6列（总）
+    MEM_MIN_USED=$(grep "Min memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $4}' | sed 's/MB$//')
+    MEM_MIN_TOTAL=$(grep "Min memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $6}' | sed 's/MB$//')
+    
+    # 提取最大-最小内存差值：Max-min memory usage: 1817MB / 78MB → 取第5列（已用差值）、第7列（总差值）
+    MEM_MAXMIN_USED=$(grep "Max-min memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $4}' | sed 's/MB$//')
+    MEM_MAXMIN_TOTAL=$(grep "Max-min memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $6}' | sed 's/MB$//')
+    
+    # 提取平均内存：Average memory usage: 967MB / 2040MB → 取第5列（已用平均）、第7列（总平均）
+    MEM_AVG_USED=$(grep "Average memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $4}' | sed 's/MB$//')
+    MEM_AVG_TOTAL=$(grep "Average memory usage" "${DEBUG_LOG}" | tail -n 1  | awk '{print $6}' | sed 's/MB$//')
+
+    # 提取JVM最大内存设置：JVM Max Memory: 4000MB → 取第4列
+    JVM_MAX_MEM=$(grep "JVM Max Memory" "${DEBUG_LOG}" | tail -n 1 | awk '{print $4}' | sed 's/MB$//')
+else
+    # 日志不存在时，输出警告（仅打印到控制台，不影响报告生成）
+    echo "Warning: ${DEBUG_LOG} not found, memory stats will show 'N/A' in report." >&2
+fi
+# ----------------------------------------------------------------------
+
+
+
 # ----
 # Add all the System Resource graphs. First the CPU and dirty buffers.
 # ----
@@ -247,9 +290,42 @@ cat >>report.html <<_EOF_
   </h3>
   <p>
     The memory usage of the Benchmark Client as measured by the logger.
-
+    The JVM was started with a maximum heap size of <b>${JVM_MAX_MEM}MB</b>.
     <br/>
     <img src="memory_usage_curve.png"/>
+  </p>
+  <p>
+    <b>Memory Usage Statistics:</b>
+    <table width="${TABLE_WIDTH}" border="2" class="mem-table">
+      <tr>
+        <th rowspan="2"><b>Memory Metric</b></th>
+        <th colspan="2"><b>Memory Usage</b></th>
+      </tr>
+      <tr>
+        <th><b>Used (MB)</b></th>
+        <th><b>Total (MB)</b></th>
+      </tr>
+      <tr>
+        <td align="left"><b>Maximum</b></td>
+        <td align="right">${MEM_MAX_USED}</td>
+        <td align="right">${MEM_MAX_TOTAL}</td>
+      </tr>
+      <tr>
+        <td align="left"><b>Minimum</b></td>
+        <td align="right">${MEM_MIN_USED}</td>
+        <td align="right">${MEM_MIN_TOTAL}</td>
+      </tr>
+      <tr>
+        <td align="left"><b>Max - Min (Difference)</b></td>
+        <td align="right">${MEM_MAXMIN_USED}</td>
+        <td align="right">${MEM_MAXMIN_TOTAL}</td>
+      </tr>
+      <tr>
+        <td align="left"><b>Average</b></td>
+        <td align="right">${MEM_AVG_USED}</td>
+        <td align="right">${MEM_AVG_TOTAL}</td>
+      </tr>
+    </table>
   </p>
   <h3>
     CPU Utilization

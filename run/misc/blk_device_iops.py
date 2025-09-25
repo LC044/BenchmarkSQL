@@ -3,7 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import os
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 
 def plot(device,width,height):
     # ----
@@ -52,15 +58,15 @@ def plot(device,width,height):
 
     plt.xlabel("Elapsed Minutes")
     plt.ylabel("IO Operations per Second")
+    plt.legend(loc="upper left")
     plt.title(f"Run #{run_info['run'][0]} of BenchmarkSQL v{run_info['driverVersion'][0]}\nBlock Device {device} IOPS")
     plt.xlim(0, xmax)
     plt.ylim(0, ymax)
-    plt.legend(loc="upper left")
-    plt.grid(True)
-    plt.tight_layout()
 
+    plt.grid(True)
+    plt.tight_layout()  # 使用紧凑布局
     # ----
     # Save image
     # ----
     output_path = os.path.join('.', f"{device}_iops.png")
-    plt.savefig(output_path)
+    plt.savefig(output_path,dpi=300)

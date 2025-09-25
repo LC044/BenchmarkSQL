@@ -3,7 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from pathlib import Path
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 def plot(width, height):
     # 读取runInfo.csv文件
     run_info = pd.read_csv("data/runInfo.csv")
@@ -89,7 +95,8 @@ def plot(width, height):
     plt.box(on=True)
     
     # 保存图像
-    plt.savefig('latency.png', dpi=300, bbox_inches='tight')
+    plt.tight_layout()
+    plt.savefig('latency.png', dpi=300)
     plt.close()
     
     # 生成交易摘要并写入CSV
