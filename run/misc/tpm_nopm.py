@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import math
 import os
 
-def plot(height,width):
+def plot(width,height):
     data_file = "data/runInfo.csv"
     # ----
     # Read runInfo.csv
