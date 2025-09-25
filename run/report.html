@@ -1,0 +1,173 @@
+<html>
+<head>
+  <title>
+    BenchmarkSQL Run # started 
+  </title>
+  <style>
+
+h1,h2,h3,h4	{ color:#2222AA;
+		}
+
+h1		{ font-family: Helvetica,Arial;
+		  font-weight: 700;
+		  font-size: 24pt;
+		}
+
+h2		{ font-family: Helvetica,Arial;
+		  font-weight: 700;
+		  font-size: 18pt;
+		}
+
+h3,h4		{ font-family: Helvetica,Arial;
+		  font-weight: 700;
+		  font-size: 16pt;
+		}
+
+p,li,dt,dd	{ font-family: Helvetica,Arial;
+		  font-size: 14pt;
+		}
+
+p		{ margin-left: 50px;
+		}
+
+pre		{ font-family: Courier,Fixed;
+		  font-size: 14pt;
+		}
+
+samp		{ font-family: Courier,Fixed;
+		  font-weight: 900;
+		  font-size: 14pt;
+		}
+
+big		{ font-weight: 900;
+		  font-size: 120%;
+		}
+img {
+  width: 1200px;
+  height: 400px;
+}
+  </style>
+</head>
+<body bgcolor="#ffffff">
+  <h1>
+    BenchmarkSQL Run # started 
+  </h1>
+
+  <p>
+    This TPC-C style benchmark run was performed by the ""
+    driver of BenchmarkSQL version . 
+  </p>
+  <h2>
+    Run Properties
+  </h2>
+  <p>
+    <table width="1100px" border="0">
+    <tr><td bgcolor="#f0f0f0">
+    <pre><small>
+    </small></pre>
+    </td></tr>
+    </table>
+  </p>
+
+  <h2>
+    Result Summary
+  </h2>
+  <p>
+    <table width="1100px" border="2">
+    <tr>
+      <th rowspan="2" width="16%"><b>Transaction<br/>Type</b></th>
+      <th colspan="2" width="24%"><b>Latency</b></th>
+      <th rowspan="2" width="12%"><b>Count</b></th>
+      <th rowspan="2" width="12%"><b>Percent</b></th>
+      <th rowspan="2" width="12%"><b>Rollback</b></th>
+      <th rowspan="2" width="12%"><b>Errors</b></th>
+      <th rowspan="2" width="12%"><b>Skipped<br/>Deliveries</b></th>
+    </tr>
+    <tr>
+      <th width="12%"><b>90th&nbsp;%</b></th>
+      <th width="12%"><b>Maximum</b></th>
+    </tr>
+    </table>
+  </p>
+
+  <p>
+    <table border="0">
+      <tr>
+        <td align="left"><big><b>Overall tpmC:</b></big></td>
+        <td align="right"><big><b></b></big></td>
+      </tr>
+      <tr>
+        <td align="left"><big><b>Overall tpmTotal:</b></big></td>
+        <td align="right"><big><b></b></big></td>
+      </tr>
+    </table>
+  </p>
+  <p>
+    The TPC-C specification has an theoretical maximum of 12.86 NEW_ORDER
+    transactions per minute per warehouse. In reality this value cannot
+    be reached because it would require a perfect mix with 45% of NEW_ORDER
+    transactions and a ZERO response time from the System under Test
+    including the database. 
+  </p>
+  <p>
+    The above tpmC of  is  of that theoretical maximum for a
+    database with  warehouses.
+  </p>
+
+  <h2>
+    Transactions per Minute and Transaction Latency
+  </h2>
+  <p>
+    tpmC is the number of NEW_ORDER Transactions, that where processed
+    per minute. tpmTOTAL is the number of Transactions processed per
+    minute for all transaction types, but without the background part
+    of the DELIVERY transaction. 
+
+    <br/>
+    <img src="tpm_nopm.png"/>
+    <br/>
+    <img src="latency.png"/>
+  </p>
+  <h2>
+    System Resource Usage
+  </h2>
+  <h3>
+    Memory Usage of the Benchmark Client
+  </h3>
+  <p>
+    The memory usage of the Benchmark Client as measured by the logger.
+
+    <br/>
+    <img src="memory_usage_curve.png"/>
+  </p>
+  <h3>
+    CPU Utilization
+  </h3>
+  <p>
+    The percentages for User, System and IOWait CPU time are stacked
+    on top of each other. 
+
+    <br/>
+    <img src="cpu_utilization.png"/>
+  </p>
+
+  <h3>
+    Dirty Kernel Buffers
+  </h3>
+  <p>
+    We track the number of dirty kernel buffers, as measured by
+    the "nr_dirty" line in /proc/vmstat, to be able to correlate
+    IO problems with when the kernel's IO schedulers are flushing
+    writes to disk. A write(2) system call does not immediately
+    cause real IO on a storage device. The data written is just
+    copied into a kernel buffer. Several tuning parameters control
+    when the OS is actually transferring these dirty buffers to
+    the IO controller(s) in order to eventually get written to
+    real disks (or similar). 
+
+    <br/>
+    <img src="dirty_buffers.png"/>
+  </p>
+</body>
+</html>
+

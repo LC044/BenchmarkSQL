@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchmarkSQL TPCC 测试报告</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .active {
+            font-weight: bold;
+            color: #003366;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>测试报告列表</h2>
+        <ul id="reportList"></ul>
+    </div>
+    <div class="main">
+        <h1 id="reportTitle">请选择一个测试报告</h1>
+        <iframe id="reportFrame"></iframe>
+    </div>
+
+    <script>
+        let currentReport = null;
+        
+        // 加载报告列表
+        async function loadReportList() {
+            try {
+                const response = await fetch('/api/reports');
+                const reports = await response.json();
+                
+                const listElement = document.getElementById('reportList');
+                listElement.innerHTML = '';
+                
+                if (reports.length === 0) {
+                    listElement.innerHTML = '<li>没有找到测试报告</li>';
+                    return;
+                }
+                
+                // 首次加载时显示最新报告
+                if (!currentReport) {
+                    currentReport = reports[0].name;
+                    loadReport(currentReport);
+                }
+                
+                reports.forEach(report => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#';
+                    a.textContent = report.name;
+                    a.dataset.report = report.name;
+                    
+                    if (report.name === currentReport) {
+                        a.classList.add('active');
+                    }
+                    
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentReport = report.name;
+                        loadReport(currentReport);
+                        updateActiveLink();
+                    });
+                    
+                    li.appendChild(a);
+                    listElement.appendChild(li);
+                });
+            } catch (error) {
+                console.error('加载报告列表失败:', error);
+            }
+        }
+        
+        // 加载指定报告
+        function loadReport(reportName) {
+            const frame = document.getElementById('reportFrame');
+            const title = document.getElementById('reportTitle');
+            
+            title.textContent = reportName;
+            frame.src = `/reports/${reportName}/report.html`;
+        }
+        
+        // 更新激活状态的链接
+        function updateActiveLink() {
+            const links = document.querySelectorAll('#reportList a');
+            links.forEach(link => {
+                if (link.dataset.report === currentReport) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+        
+        // 初始加载
+        loadReportList();
+        
+        // 定时刷新报告列表（每30秒）
+        setInterval(loadReportList, 30000);
+    </script>
+</body>
+</html>
