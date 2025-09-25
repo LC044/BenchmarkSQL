@@ -51,7 +51,7 @@ def plot(height,width):
     # ----
     # Plot
     # ----
-    plt.figure(figsize=(18, 6))
+    plt.figure(figsize=(width/100, height/100))
     plt.plot(
         count_total['group'] / 60000.0,  # convert ms to minutes
         count_total['count'] * 60.0 / interval,
