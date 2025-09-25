@@ -2,7 +2,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 def plot(width: int = 1400, height: int = 400):
     """
     Plot CPU utilization over time using data from BenchmarkSQL.
@@ -47,11 +53,12 @@ def plot(width: int = 1400, height: int = 400):
 
     plt.xlabel("Elapsed Minutes")
     plt.ylabel("CPU Utilization in Percent")
+    plt.legend(loc="upper left")
     plt.title(f"Run #{run_info.loc[0, 'run']} of BenchmarkSQL v{run_info.loc[0, 'driverVersion']}\nCPU Utilization")
     plt.xlim(0, xmax)
     plt.ylim(0, 100)
-    plt.legend(loc="upper left")
+    
     plt.grid(True)
-    plt.tight_layout()
-    plt.savefig("cpu_utilization.png")
+    plt.tight_layout() # 使用紧凑布局
+    plt.savefig("cpu_utilization.png", dpi=300)
     plt.close()

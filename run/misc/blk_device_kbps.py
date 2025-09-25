@@ -2,7 +2,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 def plot(device,width,height):
     # ----
     # Read the runInfo.csv file.
@@ -67,11 +73,12 @@ def plot(device,width,height):
 
     plt.xlabel("Elapsed Minutes")
     plt.ylabel("Kilobytes per Second")
+    plt.legend(loc="upper left")
     plt.title(f"Run #{run_info.loc[0, 'run']} of BenchmarkSQL v{run_info.loc[0, 'driverVersion']}\nBlock Device {device} Kb/s")
     plt.xlim(0, xmax)
     plt.ylim(0, ymax)
     plt.grid(True)
-    plt.legend(loc="upper left")
-    plt.tight_layout()
-    plt.savefig(f"{device}_kbps.png")
+    
+    plt.tight_layout() # 使用紧凑布局
+    plt.savefig(f"{device}_kbps.png",dpi=300)
     plt.close()

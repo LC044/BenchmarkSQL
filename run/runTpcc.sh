@@ -11,6 +11,7 @@ warehouses=200
 enable_atf=0
 run_count=1  # 默认运行1次
 destroy_db=0
+jvm_max_mem=-1  # 默认最大内存4000MB
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
@@ -40,6 +41,15 @@ while [[ $# -gt 0 ]]; do
                 shift 2
             else
                 echo "参数 -w 必须是200、400、1000中的任何一个"
+                exit 1
+            fi
+            ;;
+        -m)
+            if [[ -n "$2" && "$2" =~ ^[0-9]+$ ]]; then
+                jvm_max_mem=$2
+                shift 2
+            else
+                echo "错误：-m 后面需要跟一个正整数" >&2
                 exit 1
             fi
             ;;
@@ -92,14 +102,14 @@ function generateGraphs() {
 
     echo "使用最新的结果文件夹：$result_dir"
 
-    # 生成图表
-    echo "生成测试图表..."
-    # python3 ./generateGraphs.py "$result_dir/"
-    ./generateReport.sh "$result_dir/"
     # 移动日志文件到结果文件夹
     echo "移动日志文件..."
     if [ -f "./benchmarksql-debug.log" ]; then
         mv ./benchmarksql-debug.log "$result_dir/"
+        # 在文件末尾添加JVM内存信息
+        cat >> "$result_dir/benchmarksql-debug.log" <<_EOF_
+JVM Max Memory: ${jvm_max_mem}MB
+_EOF_
     else
         echo "警告：未找到benchmarksql-debug.log文件"
     fi
@@ -112,6 +122,12 @@ function generateGraphs() {
         echo "错误：在结果文件夹中未找到benchmarksql-debug.log"
         exit 1
     fi
+
+    # 生成图表
+    echo "生成测试图表..."
+    # python3 ./generateGraphs.py "$result_dir/"
+    ./generateReport.sh "$result_dir/"
+    echo "图表生成完成，报告位于 $result_dir/report.html"
 }
 
 # 循环运行基准测试
@@ -124,7 +140,7 @@ for ((i=1; i<=run_count; i++)); do
     fi
 
     start_database # 启动数据库
-    ./runBenchmark.sh "$props_file" 
+    ./runBenchmark.sh "$props_file" -m "$jvm_max_mem"
     stop_database # 关闭数据库
     generateGraphs # 生成图表
     echo "===== 第 $i 次基准测试完成 ====="

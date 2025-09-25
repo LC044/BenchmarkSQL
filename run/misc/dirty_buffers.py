@@ -3,7 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import os
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 def plot(width,height):
 
     # ----
@@ -48,10 +54,11 @@ def plot(width,height):
 
     plt.xlabel("Elapsed Minutes")
     plt.ylabel("Number dirty kernel buffers")
+    plt.legend(["vmstat nr_dirty"], loc="upper left")
     plt.title(f"Run #{run_info['run'][0]} of BenchmarkSQL v{run_info['driverVersion'][0]}\nDirty Kernel Buffers")
     plt.xlim(0, xmax)
     plt.ylim(0, ymax)
-    plt.legend(["vmstat nr_dirty"], loc="upper left")
+
     plt.grid(True)
     plt.tight_layout()
 
@@ -59,4 +66,4 @@ def plot(width,height):
     # Save image
     # ----
     output_path = "dirty_buffers.png"
-    plt.savefig(output_path)
+    plt.savefig(output_path,dpi=300)

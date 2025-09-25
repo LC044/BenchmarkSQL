@@ -2,7 +2,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 def plot(device, width, height):
     # 读取运行信息数据
     run_info = pd.read_csv("data/runInfo.csv")
@@ -69,5 +75,6 @@ def plot(device, width, height):
     plt.box(on=True)
     
     # 保存图表
-    plt.savefig(f"{device}_iops.png", bbox_inches='tight')
+    plt.tight_layout()
+    plt.savefig(f"{device}_iops.png",dpi=300)
     plt.close()

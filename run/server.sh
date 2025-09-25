@@ -5,7 +5,7 @@ warehouses=$1
 
 # 远程服务器信息 - 请根据实际情况修改以下信息
 
-remote_server="zhousk@192.168.200.209"
+remote_server="zhousk@172.19.0.209"
 
 # 远程服务器用户名和主机地址，例如：root@192.168.1.100，需要与本机设置互信
 
@@ -34,10 +34,12 @@ function rebuild_database() {
     echo "恢复数据库文件... from ${backup_dir} to ${db_dir}"
     ssh $remote_server "cp -r $backup_dir $db_dir/"
     # 对数据进行分盘
+    echo "对数据进行分盘..."
     ssh $remote_server "mv ${db_dir}/pg_location/tablespace2 ${TABSPACE2_DIR}/tablespace2"
     ssh $remote_server "mv ${db_dir}/pg_location/tablespace3 ${TABSPACE3_DIR}/tablespace3"
     ssh $remote_server "mv ${db_dir}/pg_xlog ${XLOG_DIR}"
     # 创建符号链接
+    echo "创建符号链接..."
     ssh $remote_server "ln -svf $TABSPACE2_DIR/tablespace2 ${db_dir}/pg_location/"
     ssh $remote_server "ln -svf $TABSPACE3_DIR/tablespace3 ${db_dir}/pg_location/"
     ssh $remote_server "ln -svf $XLOG_DIR ${db_dir}"

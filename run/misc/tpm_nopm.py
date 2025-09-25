@@ -3,7 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import os
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 def plot(width,height):
     data_file = "data/runInfo.csv"
     # ----
@@ -52,6 +58,7 @@ def plot(width,height):
     # Plot
     # ----
     plt.figure(figsize=(width/100, height/100))
+    plt.subplots_adjust()
     plt.plot(
         count_total['group'] / 60000.0,  # convert ms to minutes
         count_total['count'] * 60.0 / interval,
@@ -72,15 +79,17 @@ def plot(width,height):
     # ----
     plt.xlabel("Elapsed Minutes")
     plt.ylabel("Transactions per Minute")
-    plt.title(f"Run #{run_info['run'][0]} of BenchmarkSQL v{run_info['driverVersion'][0]}\nTransactions per Minute")
     plt.legend(loc='upper left')
-    plt.grid(True)
+    plt.title(f"Run #{run_info['run'][0]} of BenchmarkSQL v{run_info['driverVersion'][0]}\nTransactions per Minute")
+
     plt.xlim(0, xmax)
     plt.ylim(0, ymax)
-    plt.tight_layout()
+    plt.tight_layout() # 使用紧凑布局
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.box(on=True)
 
     # ----
     # Save figure
     # ----
-    plt.savefig("tpm_nopm.png")
+    plt.savefig("tpm_nopm.png", dpi=300)
     plt.close()

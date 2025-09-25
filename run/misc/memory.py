@@ -3,7 +3,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import sys
-
+# 设置全局字体大小
+plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
+plt.rcParams['axes.titlesize'] = 16  # 标题
+plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
+plt.rcParams['legend.fontsize'] = 12  # 图例
+plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
+plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
 def main():
     # 检查命令行参数
     if len(sys.argv) != 2:
@@ -74,25 +80,30 @@ def main():
     df["minutes_since_start"] = (df["timestamp"] - start_time).dt.total_seconds() / 60
     
     # 绘制曲线
-    plt.figure(figsize=(18, 6))
-    plt.plot(df["minutes_since_start"], df["used_mb"], label="Used Memory (MB)", color="blue")
-    plt.plot(df["minutes_since_start"], df["total_mb"], label="Total Memory (MB)", color="orange", linestyle="--")
-    plt.xlabel("Minutes Since Start")
-    plt.ylabel("Memory (MB)")
-    plt.title("BenchmarkSQL Memory Usage Over Time")
-    plt.legend(loc='upper left')
-    plt.grid(True)
+    plt.figure(figsize=(18, 6), dpi=100)
+    # 设置边距
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.85, bottom=0.15)
+    plt.plot(df["minutes_since_start"], df["used_mb"], label="Used Memory (MB)", linewidth=2, color="blue")
+    plt.plot(df["minutes_since_start"], df["total_mb"], label="Total Memory (MB)", linewidth=2, color="orange", linestyle="--")
     # plt.xlim(0, xmax)
     plt.ylim(0, ymax)
-    plt.tight_layout()
-    
+    plt.xlabel("Minutes Since Start")
+    plt.ylabel("Memory (MB)")
+    plt.legend(loc='upper left')
+    plt.title("BenchmarkSQL Memory Usage Over Time")
+
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.box(on=True)
+
     # 获取日志文件所在目录
     log_dir = os.path.dirname(log_file)
     # 构建图片保存路径（与日志文件同目录）
     image_path = os.path.join(log_dir, "memory_usage_curve.png")
     
     # 保存图片
-    plt.savefig(image_path, dpi=150)
+    plt.tight_layout()
+    plt.savefig(image_path, dpi=300)
+    plt.close()
     print(f"曲线已保存为 {image_path}")
 
 if __name__ == "__main__":
