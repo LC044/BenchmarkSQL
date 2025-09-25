@@ -47,8 +47,8 @@ jvm_initial_mem=$((jvm_max_mem / 2))
 
 echo "运行 jTPCC: 初始内存 ${jvm_initial_mem}MB, 最大内存 ${jvm_max_mem}MB"
 
-# 根据jvm_max_mem的值决定是否设置JVM内存参数
-if [ "${jvm_max_mem}" -le 0 ] ; then
+# 如果jvm_max_mem为0，则不设置内存参数
+if [ "${jvm_max_mem}" -ne 0 ] ; then
     java -Xms${jvm_initial_mem}m -Xmx${jvm_max_mem}m -cp "$myCP" $myOPTS jTPCC
 else
     java -cp "$myCP" $myOPTS jTPCC
