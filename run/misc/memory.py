@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import os
 import sys
@@ -68,16 +69,34 @@ def main():
         total_mem_min = 0
     ymax = total_mem_max * 1.2
     xmax = len(total_mem)
+
+    # 计算相对时间（分钟），从0开始
+    start_time = df["timestamp"].iloc[0]
+    df["minutes_since_start"] = (df["timestamp"] - start_time).dt.total_seconds() / 60
+    # 假设t为时间数组（如0到60分钟，步长0.1分钟），y为对应内存使用数据
+    t = df["minutes_since_start"]  
+    y = df["used_mb"]  # 替换为从图中提取的内存使用数据（需与t长度一致）
+
+    # 执行傅里叶变换
+    fft_vals = np.fft.fft(y)            # 傅里叶变换结果（复数）
+    freqs = np.fft.fftfreq(len(t), t[1]-t[0])  # 频率数组（单位：1/分钟）
+
+    # 计算振幅（取复数的模），排除直流分量（0频率）
+    fft_amps = np.abs(fft_vals)
+    dominant_freq_idx = np.argmax(fft_amps[1:]) + 1  # 找到最大振幅的频率索引（跳过0频率）
+    dominant_freq = freqs[dominant_freq_idx]         # 主导频率
+
+    # 计算平均周期
+    average_period = 1 / dominant_freq
+    print(f"平均周期：{average_period:.2f} 分钟")
     with open(log_file, "a") as f:
         f.write(f"Max memory usage: {used_mem_max:.0f}MB / {total_mem_max:.0f}MB\n")
         f.write(f"Min memory usage: {used_mem_min:.0f}MB / {total_mem_min:.0f}MB\n")
         f.write(f"Max-min memory usage: {used_mem_max-used_mem_min:.0f}MB / {total_mem_max-total_mem_min:.0f}MB\n")
         f.write(f"Average memory usage: {used_mem_mean:.0f}MB / {total_mem_mean:.0f}MB\n")
+        # 写入平均周期
+        f.write(f"Average period: {average_period:.2f} minutes\n")
 
-
-    # 计算相对时间（分钟），从0开始
-    start_time = df["timestamp"].iloc[0]
-    df["minutes_since_start"] = (df["timestamp"] - start_time).dt.total_seconds() / 60
     
     # 绘制曲线
     plt.figure(figsize=(18, 6), dpi=100)

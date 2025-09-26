@@ -35,7 +35,7 @@ function getProp()
 
 #./generateGraphs.sh "${1}"
 
-python3 ./generateGraphs.py "${1}"
+# python3 ./generateGraphs.py "${1}"
 
 cd "${1}"
 echo -n "Generating ${1}/report.html ... "
@@ -249,6 +249,7 @@ MEM_MAXMIN_TOTAL="N/A"
 MEM_AVG_USED="N/A"
 MEM_AVG_TOTAL="N/A"
 JVM_MAX_MEM="N/A"
+AVERAGE_PERIOD="N/A"
 
 # 检查日志文件是否存在，存在则提取数据
 if [ -f "${DEBUG_LOG}" ]; then
@@ -270,6 +271,9 @@ if [ -f "${DEBUG_LOG}" ]; then
 
     # 提取JVM最大内存设置：JVM Max Memory: 4000MB → 取第4列
     JVM_MAX_MEM=$(grep "JVM Max Memory" "${DEBUG_LOG}" | tail -n 1 | awk '{print $4}' | sed 's/MB$//')
+
+    # 提取平均周期：Average period: 2.50 minutes → 取第3列
+    AVERAGE_PERIOD=$(grep "Average period" "${DEBUG_LOG}" | tail -n 1 | awk '{print $3}' | sed 's/ minutes$//')
 else
     # 日志不存在时，输出警告（仅打印到控制台，不影响报告生成）
     echo "Warning: ${DEBUG_LOG} not found, memory stats will show 'N/A' in report." >&2
@@ -324,6 +328,10 @@ cat >>report.html <<_EOF_
         <td align="left"><b>Average</b></td>
         <td align="right">${MEM_AVG_USED}</td>
         <td align="right">${MEM_AVG_TOTAL}</td>
+      </tr>
+      <tr>
+        <th rowspan="2" align="left"><b>Average period(minutes)</b></th>
+        <th colspan="2"><b>${AVERAGE_PERIOD}</b></th>
       </tr>
     </table>
   </p>
