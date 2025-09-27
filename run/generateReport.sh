@@ -35,7 +35,7 @@ function getProp()
 
 #./generateGraphs.sh "${1}"
 
-# python3 ./generateGraphs.py "${1}"
+python3 ./generateGraphs.py "${1}"
 
 cd "${1}"
 echo -n "Generating ${1}/report.html ... "
@@ -273,7 +273,7 @@ if [ -f "${DEBUG_LOG}" ]; then
     JVM_MAX_MEM=$(grep "JVM Max Memory" "${DEBUG_LOG}" | tail -n 1 | awk '{print $4}' | sed 's/MB$//')
 
     # 提取平均周期：Average period: 2.50 minutes → 取第3列
-    AVERAGE_PERIOD=$(grep "Average period" "${DEBUG_LOG}" | tail -n 1 | awk '{print $3}' | sed 's/ minutes$//')
+    AVERAGE_PERIOD=$(grep "Average period" "${DEBUG_LOG}" | tail -n 1 | awk '{print $3}' | sed 's/ s$//')
 else
     # 日志不存在时，输出警告（仅打印到控制台，不影响报告生成）
     echo "Warning: ${DEBUG_LOG} not found, memory stats will show 'N/A' in report." >&2
@@ -330,7 +330,7 @@ cat >>report.html <<_EOF_
         <td align="right">${MEM_AVG_TOTAL}</td>
       </tr>
       <tr>
-        <th rowspan="2" align="left"><b>Average period(minutes)</b></th>
+        <th rowspan="2" align="left"><b>Average period(s)</b></th>
         <th colspan="2"><b>${AVERAGE_PERIOD}</b></th>
       </tr>
     </table>
