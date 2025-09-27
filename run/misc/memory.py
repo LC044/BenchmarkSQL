@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import sys
+from scipy.fft import fft
+
 # 设置全局字体大小
 plt.rcParams['font.size'] = 14  # 影响标题、标签、图例等默认字体大小
 plt.rcParams['axes.titlesize'] = 16  # 标题
@@ -11,6 +13,26 @@ plt.rcParams['axes.labelsize'] = 14  # 坐标轴标签
 plt.rcParams['legend.fontsize'] = 12  # 图例
 plt.rcParams['xtick.labelsize'] = 12  # x轴刻度
 plt.rcParams['ytick.labelsize'] = 12  # y轴刻度
+
+# ====================
+# 3. 傅里叶变换法 (FFT)
+# ====================
+def fft_period(data, sampling_interval=1):
+    """
+    data: 预处理后的时间序列
+    sampling_interval: 采样间隔（单位：分钟）
+    """
+    n = len(data)
+    yf = fft(data)
+    xf = np.fft.fftfreq(n, d=sampling_interval)[:n // 2]
+    yf_abs = 2.0 / n * np.abs(yf[:n // 2])
+
+    # 找到最大频率对应的周期
+    peak_freq = xf[np.argmax(yf_abs[1:]) + 1]  # 跳过0频率
+    period = 1 / peak_freq
+
+    return period, xf, yf_abs
+
 def main():
     # 检查命令行参数
     if len(sys.argv) != 2:
@@ -77,25 +99,17 @@ def main():
     t = df["minutes_since_start"]  
     y = df["used_mb"]  # 替换为从图中提取的内存使用数据（需与t长度一致）
 
-    # 执行傅里叶变换
-    fft_vals = np.fft.fft(y)            # 傅里叶变换结果（复数）
-    freqs = np.fft.fftfreq(len(t), t[1]-t[0])  # 频率数组（单位：1/分钟）
-
-    # 计算振幅（取复数的模），排除直流分量（0频率）
-    fft_amps = np.abs(fft_vals)
-    dominant_freq_idx = np.argmax(fft_amps[1:]) + 1  # 找到最大振幅的频率索引（跳过0频率）
-    dominant_freq = freqs[dominant_freq_idx]         # 主导频率
 
     # 计算平均周期
-    average_period = 1 / dominant_freq
-    print(f"平均周期：{average_period:.2f} 分钟")
+    average_period,_,_ = fft_period(y[-600:], sampling_interval=1)
+    print(f"平均周期：{average_period:.2f} s")
     with open(log_file, "a") as f:
         f.write(f"Max memory usage: {used_mem_max:.0f}MB / {total_mem_max:.0f}MB\n")
         f.write(f"Min memory usage: {used_mem_min:.0f}MB / {total_mem_min:.0f}MB\n")
         f.write(f"Max-min memory usage: {used_mem_max-used_mem_min:.0f}MB / {total_mem_max-total_mem_min:.0f}MB\n")
         f.write(f"Average memory usage: {used_mem_mean:.0f}MB / {total_mem_mean:.0f}MB\n")
         # 写入平均周期
-        f.write(f"Average period: {average_period:.2f} minutes\n")
+        f.write(f"Average period: {average_period:.2f} s\n")
 
     
     # 绘制曲线

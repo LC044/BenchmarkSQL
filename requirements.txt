@@ -3,3 +3,4 @@ matplotlib
 fastapi
 uvicorn 
 jinja2
+scipy
