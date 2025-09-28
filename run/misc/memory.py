@@ -22,6 +22,8 @@ def fft_period(data, sampling_interval=1):
     data: 预处理后的时间序列
     sampling_interval: 采样间隔（单位：分钟）
     """
+    if len(data)>1800:
+        data = data[600:]
     n = len(data)
     yf = fft(data)
     xf = np.fft.fftfreq(n, d=sampling_interval)[:n // 2]
@@ -101,7 +103,7 @@ def main():
 
 
     # 计算平均周期
-    average_period,_,_ = fft_period(y[-600:], sampling_interval=1)
+    average_period,_,_ = fft_period(y, sampling_interval=1)
     print(f"平均周期：{average_period:.2f} s")
     with open(log_file, "a") as f:
         f.write(f"Max memory usage: {used_mem_max:.0f}MB / {total_mem_max:.0f}MB\n")
