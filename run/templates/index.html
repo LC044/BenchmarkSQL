@@ -2,59 +2,209 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>BenchmarkSQL TPCC 测试报告</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* 全局基础样式：微软Fluent Design核心风格 */
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
+            box-sizing: border-box;
+            /* 微软默认字体栈 */
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+            transition: all 0.2s ease-in-out; /* 全局平滑过渡 */
+        }
+
+        body {
+            background-color: #f3f4f6; /* 微软中性背景色 */
+            color: #202124; /* 主文本色：深灰，提升可读性 */
             height: 100vh;
+            display: flex;
+            overflow: hidden; /* 避免页面整体滚动 */
         }
+
+        /* 侧边栏样式：独立卡片感 + 清晰层级 */
         .sidebar {
-            width: 250px;
-            background-color: #f0f0f0;
-            padding: 20px;
+            width: 260px; /* 微软侧边栏常用宽度 */
+            min-width: 240px; /* 最小宽度，防止挤压 */
+            background-color: #ffffff; /* 纯白背景，干净通透 */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* 柔和阴影，提升层次感 */
+            padding: 24px 0; /* 上下内边距，左右留白 */
             overflow-y: auto;
+            z-index: 10;
         }
+
+        /* 侧边栏标题：加粗 + 固定间距 */
+        .sidebar h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+            padding: 0 24px 16px; /* 左对齐 + 底部间距 */
+            border-bottom: 1px solid #eaecef; /* 浅色分隔线，弱化边界 */
+            margin-bottom: 16px;
+        }
+
+        /* 树形结构基础样式 */
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin: 0;
+            line-height: 24px; /* 行高统一，提升可读性 */
+        }
+
+        /* 折叠/展开按钮：微软风格符号 + 交互反馈 */
+        .tree-toggle {
+            display: flex;
+            align-items: center;
+            padding: 6px 24px;
+            font-size: 14px;
+            color: #202124;
+            cursor: pointer;
+            user-select: none;
+            width: 100%;
+        }
+
+        .tree-toggle::before {
+            content: ""; /* 微软风格折叠图标（Unicode） */
+            font-family: 'Segoe MDL2 Assets'; /* 微软图标字体 */
+            font-size: 12px;
+            margin-right: 8px;
+            color: #606060; /* 次要图标色 */
+            transition: transform 0.2s ease;
+        }
+
+        .tree-toggle.expanded::before {
+            content: ""; /* 微软风格展开图标 */
+            transform: rotate(0);
+        }
+
+        /* 折叠/展开按钮 hover 效果 */
+        .tree-toggle:hover {
+            background-color: #f1f3f4; /* 浅灰背景，柔和反馈 */
+            color: #0078d4; /*  hover时文字变微软蓝 */
+        }
+
+        .tree-toggle:hover::before {
+            color: #0078d4; /* hover时图标变微软蓝 */
+        }
+
+        /* 子节点容器：平滑折叠/展开 */
+        .tree-items {
+            display: none;
+            padding-left: 8px; /* 子节点缩进，体现层级 */
+        }
+
+        .tree-toggle.expanded + .tree-items {
+            display: block;
+        }
+
+        /* 报告链接样式：清晰状态区分 */
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 6px 24px;
+            font-size: 14px;
+            color: #202124;
+            text-decoration: none;
+            width: 100%;
+            position: relative;
+        }
+
+        /* 链接 hover 效果 */
+        .sidebar a:hover {
+            background-color: #e8f0fe; /* 微软蓝浅背景 */
+            color: #0078d4;
+        }
+
+        /* 活跃链接样式：微软蓝高亮 + 左侧边框 */
+        .sidebar a.active {
+            background-color: #e8f0fe;
+            color: #0078d4;
+            font-weight: 500;
+        }
+
+        .sidebar a.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: #0078d4; /* 左侧蓝色标识线 */
+        }
+
+        /* 主内容区样式：卡片化 + 留白 */
         .main {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
+            background-color: #f9fafb; /* 主内容区浅灰背景，与侧边栏区分 */
         }
-        h1, h2 {
-            color: #333;
+
+        /* 报告标题：层级清晰 + 间距合理 */
+        #reportTitle {
+            font-size: 22px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 20px;
+            line-height: 1.3;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        a {
-            text-decoration: none;
-            color: #0066cc;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .active {
-            font-weight: bold;
-            color: #003366;
-        }
-        iframe {
+
+        /* Iframe 容器：卡片化 + 阴影 */
+        #reportFrame {
             width: 100%;
-            height: 100%;
-            border: none;
+            height: calc(100vh - 120px); /* 自适应高度，减去标题和内边距 */
+            border-radius: 8px; /* 微软风格圆角 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 柔和阴影，提升卡片感 */
+            background-color: #ffffff;
+        }
+
+        /* 滚动条美化：微软风格细滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f3f4;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c9cdcf;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aab0b4;
+        }
+
+        /* 响应式适配：小屏幕优化 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                padding: 16px;
+            }
+
+            #reportTitle {
+                font-size: 18px;
+            }
+
+            #reportFrame {
+                height: calc(100vh - 100px);
+            }
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <h2>测试报告列表</h2>
-        <ul id="reportList"></ul>
+        <ul id="reportTree"></ul>
     </div>
     <div class="main">
         <h1 id="reportTitle">请选择一个测试报告</h1>
@@ -64,78 +214,136 @@
     <script>
         let currentReport = null;
         
-        // 加载报告列表
-        async function loadReportList() {
+        // 加载报告树
+        async function loadReportTree() {
             try {
                 const response = await fetch('/api/reports');
                 const reports = await response.json();
                 
-                const listElement = document.getElementById('reportList');
-                listElement.innerHTML = '';
+                const treeElement = document.getElementById('reportTree');
+                treeElement.innerHTML = '';
                 
                 if (reports.length === 0) {
-                    listElement.innerHTML = '<li>没有找到测试报告</li>';
+                    treeElement.innerHTML = '<li><span style="padding: 6px 24px; color: #606060; font-size: 14px;">没有找到测试报告</span></li>';
                     return;
                 }
                 
-                // 首次加载时显示最新报告
+                renderTree(reports, treeElement);
+                // 首次加载时显示第一个报告，如果第一个报告有子节点则展开这个报告层，最多展开三层
                 if (!currentReport) {
-                    currentReport = reports[0].name;
-                    loadReport(currentReport);
+                    const firstReportLink = treeElement.querySelector('a');
+                    if (firstReportLink) {
+                        currentReport = firstReportLink.dataset.report;
+                        loadReport(currentReport);
+                        updateActiveLink();
+                        
+                        // 展开前三层
+                        let parent = firstReportLink.parentElement;
+                        for (let i = 0; i < 3; i++) {
+                            if (parent) {
+                                const toggle = parent.querySelector('.tree-toggle');
+                                if (toggle && !toggle.classList.contains('expanded')) {
+                                    toggle.classList.add('expanded');
+                                    const items = parent.querySelector('.tree-items');
+                                    if (items) items.style.display = 'block';
+                                }
+                                parent = parent.parentElement.closest('li');
+                            } else {
+                                break;
+                            }
+                        }
+                    }
                 }
+            } catch (error) {
+                console.error('加载报告树失败:', error);
+                const treeElement = document.getElementById('reportTree');
+                treeElement.innerHTML = '<li><span style="padding: 6px 24px; color: #d93025; font-size: 14px;">加载失败，请刷新重试</span></li>';
+            }
+        }
+        
+        // 递归渲染树形结构
+        function renderTree(nodes, parentElement) {
+            nodes.forEach(node => {
+                const li = document.createElement('li');
                 
-                reports.forEach(report => {
-                    const li = document.createElement('li');
+                if (node.children && node.children.length > 0) {
+                    // 分组节点
+                    const toggle = document.createElement('span');
+                    toggle.className = 'tree-toggle';
+                    toggle.textContent = node.name;
+                    toggle.addEventListener('click', () => {
+                        toggle.classList.toggle('expanded');
+                        const items = li.querySelector('.tree-items');
+                        items.style.display = toggle.classList.contains('expanded') ? 'block' : 'none';
+                    });
+                    
+                    li.appendChild(toggle);
+                    
+                    const items = document.createElement('ul');
+                    items.className = 'tree-items';
+                    items.style.display = 'none';
+                    li.appendChild(items);
+                    
+                    // 递归渲染子节点
+                    renderTree(node.children, items);
+                } else {
+                    // 报告节点
                     const a = document.createElement('a');
                     a.href = '#';
-                    a.textContent = report.name;
-                    a.dataset.report = report.name;
+                    a.textContent = node.name;
+                    a.dataset.report = node.path;
                     
-                    if (report.name === currentReport) {
+                    if (node.path === currentReport) {
                         a.classList.add('active');
                     }
                     
                     a.addEventListener('click', (e) => {
                         e.preventDefault();
-                        currentReport = report.name;
+                        currentReport = node.path;
                         loadReport(currentReport);
                         updateActiveLink();
                     });
                     
                     li.appendChild(a);
-                    listElement.appendChild(li);
-                });
-            } catch (error) {
-                console.error('加载报告列表失败:', error);
-            }
+                }
+                
+                parentElement.appendChild(li);
+            });
         }
         
         // 加载指定报告
-        function loadReport(reportName) {
+        function loadReport(reportPath) {
             const frame = document.getElementById('reportFrame');
             const title = document.getElementById('reportTitle');
             
-            title.textContent = reportName;
-            frame.src = `/reports/${reportName}/report.html`;
+            // 优化标题显示（截取路径最后一段，避免过长）
+            const reportName = reportPath.split('/').pop() || reportPath;
+            title.textContent = `BenchmarkSQL TPCC - ${reportName}`;
+            
+            // Iframe 加载状态提示
+            frame.src = 'about:blank';
+            frame.contentDocument.body.innerHTML = '<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#606060; font-size:14px;">加载报告中...</div>';
+            frame.src = `/reports/${reportPath}/report.html`;
+            
+            // 加载失败处理
+            frame.onerror = () => {
+                frame.contentDocument.body.innerHTML = '<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#d93025; font-size:14px;">报告加载失败，请检查路径是否正确</div>';
+            };
         }
         
         // 更新激活状态的链接
         function updateActiveLink() {
-            const links = document.querySelectorAll('#reportList a');
+            const links = document.querySelectorAll('#reportTree a');
             links.forEach(link => {
-                if (link.dataset.report === currentReport) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
+                link.classList.toggle('active', link.dataset.report === currentReport);
             });
         }
         
         // 初始加载
-        loadReportList();
+        loadReportTree();
         
-        // 定时刷新报告列表（每30秒）
-        setInterval(loadReportList, 30000);
+        // 定时刷新报告树（每30秒）
+        //setInterval(loadReportTree, 30000);
     </script>
 </body>
 </html>
