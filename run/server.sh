@@ -55,5 +55,6 @@ function start_database() {
 
 function stop_database() {
     echo "关闭数据库..."
+    ssh $remote_server "[ -f ${db_dir}/postmaster.pid ] && kill -9 $(head -n 1 ${db_dir}/postmaster.pid)"
     ssh $remote_server "gs_ctl stop -D $db_dir"
 }
