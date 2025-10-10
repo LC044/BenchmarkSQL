@@ -156,7 +156,7 @@ async def index(request: Request):
 @app.get("/api/reports")
 async def get_reports():
     reports = find_report_dirs()
-    reports.sort(key=cmp_to_key(natural_compare), reverse=True)
+    # reports.sort(key=cmp_to_key(natural_compare), reverse=True)
     return reports
 
 ROOT = Path(".").resolve()  # 从当前工作目录查找 my_result_* 文件夹
