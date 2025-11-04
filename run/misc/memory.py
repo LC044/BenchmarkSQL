@@ -22,8 +22,8 @@ def fft_period(data, sampling_interval=1):
     data: 预处理后的时间序列
     sampling_interval: 采样间隔（单位：分钟）
     """
-    if len(data)>1800:
-        data = data[600:]
+    if len(data)>600:
+        data = data[300:]
     n = len(data)
     yf = fft(data)
     xf = np.fft.fftfreq(n, d=sampling_interval)[:n // 2]

@@ -56,7 +56,7 @@ backup_dir="/mnt/nvme4n1/zhousk/backup/${warehouses}w"
 ### 使用方法
 
 ```bash
-python3 app.py
+python3 app.py --port 8000
 ```
 
 在浏览器打开 `http://ip:8000` （ip为benchmarksql的ip地址）来查看报告

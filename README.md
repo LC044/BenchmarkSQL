@@ -26,7 +26,7 @@ create database tpccdb;
 
 ### 1.2 下载openGauss JDBC驱动
 
-BenchMarkSQL使用JDBC驱动包，连续各种数据库，故需要下载openGauss对应版本的JDBC驱动包。
+BenchMarkSQL使用JDBC驱动包，连接各种数据库，故需要下载openGauss对应版本的JDBC驱动包。
 
 * 下载地址：[https://opengauss.org/zh/download/](https://opengauss.org/zh/download/)
 
@@ -178,15 +178,11 @@ cd ~/benchmarksql-5.0/run
 
 ### 3.3 生产压测报告
 
-该操作需要安装R语言的环境，生成报告之前需要检查一下R语言环境是否存在。
+该操作需要安装Python3，确保依赖安装完成
 
 ```bash
-R --version
+pip3 install -r requirements.txt
 ```
-
-![image](doc/image/image-20250702153958-4sfkdce.png)
-
-如果没有R语言环境需要手动下载源码并编译
 
 * 生成报告
 

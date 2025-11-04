@@ -185,5 +185,21 @@ async def serve_report_file(folder: str, file_path: str, request: Request):
     # 使用 FileResponse 返回
     return FileResponse(path=str(target))
 
+import argparse
+
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
+    # 创建参数解析器
+    parser = argparse.ArgumentParser(description="启动UVicorn服务，支持指定端口")
+    # 添加端口参数：--port，类型为整数，默认8000，添加帮助说明
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="服务监听的端口号，默认为8000"
+    )
+    # 解析命令行参数
+    args = parser.parse_args()
+    
+    # 启动UVicorn，使用解析到的端口
+    import uvicorn
+    uvicorn.run("app:app", host="0.0.0.0", port=args.port, reload=False)
